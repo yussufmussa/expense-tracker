@@ -2,10 +2,14 @@
   <Header />
 
   <div class="container">
-    <Balance :total="total" />
-    <IncomeExpenses :income="income" :expenses="expenses" />
-    <TranscationList :transactions="transactions" />
-    <AddTransaction />
+    <Balance :total="+total" />
+    <IncomeExpenses :income="+income" :expenses="+expenses" />
+    <TranscationList :transactions="transactions" @transactionDeleted ="handleTransactionSubmitted" />
+    <AddTransaction 
+
+    @transactionSubmitted="handleTransactionSubmitted"
+
+    />
     
   </div>
 </template>
@@ -51,4 +55,26 @@ const expenses = computed(() => {
     return acc + transaction.amount;
   }, 0).toFixed(2);
 });
+
+
+//add transction
+
+const handleTransactionSubmitted = (transactionData) => {
+  transactions.value.push({
+    id: generateUniqueId(),
+    text: transactionData.text,
+    amount: transactionData.amount,
+
+  });
+  console.log(generateUniqueId());
+}
+
+// generate id
+const generateUniqueId = () => {
+  return Math.floor(Math.random() * 10000000)
+};
+
+const handleTransactionDeleted = (id) => {
+  console.log(id);
+}
 </script>
